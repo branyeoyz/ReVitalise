@@ -88,7 +88,6 @@ with open(filename+str(filenum)+'.csv', 'w', newline='') as file:
     writer.writerow(accz_list)
     
 sessionname = filename + str(filenum)
-print(sessionname)
 
 #mainserviceaccountfile needs to be in the same folder as the code 
 
@@ -199,8 +198,7 @@ def find_takeoff(new_df, elem):
   dat = new_df.iloc[pk_index-6: pk_index+1,]
   dat = dat.reset_index(drop=True)
 
-  #look at 4 points before peak to find take-off velocity
-  #loop to find points before and after 0.94
+
   x = []
   y = []
   for i in range(len(dat)-1):
@@ -223,8 +221,7 @@ def find_landing(new_df, elem):
   dat = new_df.iloc[pk_index: pk_index+7,]
   dat = dat.reset_index(drop=True)
 
-  #look at 4 points before peak to find take-off velocity
-  #loop to find points before and after 0.94
+
   x = []
   y = []
   for i in range(len(dat)-1):
@@ -249,8 +246,6 @@ def jump_height(new_df, acc_ls):
     t_landing = find_landing(new_df, elem)
     flight_time = t_landing-t_takeoff
     jump_height = (0.982*flight_time)/8
-    
-    #store each estimation in dist_ls
     dist_ls.append(jump_height)
   return dist_ls
 
