@@ -287,7 +287,7 @@ def diff_jumps(lst, filename):
   # load the model from disk
   loaded_model = pickle.load(open(filename, 'rb'))
   #put into model for classification
-  #rfc_predict = loaded_model.predict(x)
+  rfc_predict = loaded_model.predict(x)
 
   for i in rfc_predict:
     if i == 1:
@@ -295,11 +295,8 @@ def diff_jumps(lst, filename):
     else:
       lst_class.append('Block jump')
 
-  #from collections import Counter
-  #z = ['Block jump', 'Approach jump']
-  #dict_class = Counter(z)
-  #dict_class = {"Block jump":5, "Approach jump":1}
-  #lst_class = ['Block jump', 'Approach jump', 'Block jump', 'Block jump', 'Block jump', 'Block jump']
+  from collections import Counter
+  dict_class = Counter(lst_class)
   return dict_class,lst_class
 
 def get_jump_stats(jump_dict, class_lst, height):
@@ -337,25 +334,22 @@ def get_jump_stats(jump_dict, class_lst, height):
 
 """##Final functions to get the required variables"""
 
-#calling of basic functions
-#new_df = data_processing(pd.read_excel('Book2.xlsx')) #should get from firebase
-link="session1.csv"
+
 get_csv()
+#link is the name of the csv file created by get_csv()
 data_processing_NEW(link)
 new_df = data_processing_NEW(link)
 jump_data = get_jump(new_df) 
 
-#find jump height of all jumps
+#find jump height & quantify jumps
 total_jump = len(jump_data[0])#total jumps
 all_jump_acc = jump_data[1]["peak_heights"]#list of all recorded peak accelerations
 height = jump_height(new_df, all_jump_acc)
 
 #differentiate jumps
 jump_lst = ML_processing(new_df, all_jump_acc)
-filename = "/content/drive/MyDrive/finalized_model.sav"
+#filename: directory where the trained model is saved
 jump_dict, class_lst = diff_jumps(jump_lst, filename)
 final_dict = get_jump_stats(jump_dict, class_lst, height)
-final_dict
 
 #final_dict - dictionary of stats for different jumps
-#[counts, avg height, max height]
