@@ -98,7 +98,7 @@ if not firebase_admin._apps:
 
 db = firestore.client()
 
-#run these with appropriate functions after running "Final Function"
+#Write the calculated values back to Firebase
 session = {
 'approach jump count':final_dict.get('Approach')[0],
 'block jump count':final_dict.get('Block')[0],
@@ -284,7 +284,7 @@ def diff_jumps(lst, filename):
   lst_class=[]
   x_test = np.vstack(lst)
 
-  # load the model from disk
+  # load the model from drive
   loaded_model = pickle.load(open(filename, 'rb'))
   #put into model for classification
   rfc_predict = loaded_model.predict(x)
@@ -342,8 +342,8 @@ new_df = data_processing_NEW(link)
 jump_data = get_jump(new_df) 
 
 #find jump height & quantify jumps
-total_jump = len(jump_data[0])#total jumps
-all_jump_acc = jump_data[1]["peak_heights"]#list of all recorded peak accelerations
+total_jump = len(jump_data[0])
+all_jump_acc = jump_data[1]["peak_heights"]
 height = jump_height(new_df, all_jump_acc)
 
 #differentiate jumps
